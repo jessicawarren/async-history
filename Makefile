@@ -1,6 +1,4 @@
-.PHONY: slides
+.DEFAULT_GOAL = slides.html
 
-default: slides
-
-slides:
+slides.html: code-slides/*.py
 	python build-slides.py code-slides/[0-9]*.py
