@@ -1,0 +1,50 @@
+This is a presentation + code-project for PyYYC November, 2017
+
+Code Assignment:
+
+ - list all py-yyc repos
+   https://api.github.com/orgs/py-yyc/repos
+ - bonus: list most-recent first
+ - discover the SHA1 of the most-recent commit of each repo
+   https://api.github.com/repos/py-yyc/{repo}/commits
+ - bonus: retrieve these in parallel
+
+Rough Overview:
+
+ - review: kurt's June presentation
+ - Twisted (2002 ..)
+ - @inlineCallbacks and yield (2006)
+ - asyncio (2013 ..)
+
+ - link to kurt's June presentation
+   - 'quick review' of ^ (in 1 or 2 slides)
+     - cores vs. threads
+     - context-switches cost time
+     - io-bound vs cpu-bound
+   - 'event-based programming'
+     - incoming events trigger "callbacks"
+     - callbacks do small amount of processing and trigger other events
+       (e.g. send a network packet, queue some work, etc)
+ - Twisted 2002
+     - release 1.0: 2002 (http://twistedmatrix.com/pipermail/twisted-python/2002-October/002049.html)
+     - youtube started 2005
+     - Deferred()
+   - ancient times: Deferred
+     - "callback" and "errback" functions registered
+     - can be 'chained'
+     - Deferred is either "called" or "not called"
+     - no need for an event-loop!
+   - event-loop
+     - twisted supports many OS event-loops
+     - poll, epoll, select, WaitForMultipleObjects, IOCP, KQueue, CoreFoundation
+     - can interoperate w/ many GUI event-loops
+   - event-loop
+     - glues network and OS events to callbacks
+     - e.g. "dataReceived(data)" whenever a socket is read()-able
+   - example: connect to a server
+ - Twisted 2006: @inlineCallbacks + yield
+ - 2009: "yield from"
+ - asyncio: 2013
+ - asyncio: "async def", "await"
+ - Twisted: "async def", "await"
+
