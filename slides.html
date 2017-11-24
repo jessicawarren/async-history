@@ -169,7 +169,7 @@ li:before { content: (">"); font-size: 50%; }
 
 <div class="slide">
 <!-- gathered html -->
-  <h1 style="valign:center;">async python</h1> <ul class="incremental">   <li>review: async in general</li>   <li>Twisted: 2002: Deferred</li>   <li>Twisted: 2006: @inlineCallbacks + yield</li>   <li>Coroutines: 2009: "yield from"</li>   <li>asyncio: 2013</li>   <li>asyncio: "async def", "await"</li>   <li>Twisted: "async def", "await"</li> </ul><!-- /html -->
+  <h1 style="valign:center;">async python</h1> <ul class="incremental">   <li>review: async in general</li>   <li>Twisted: 2002: <tt>Deferred</tt></li>   <li>Twisted: 2006: <tt>@inlineCallbacks</tt> + <tt>yield</tt></li>   <li>Coroutines: 2009: "<tt>yield from</tt>"</li>   <li>asyncio: 2013</li>   <li>asyncio: "<tt>async def</tt>", "<tt>await</tt>"</li>   <li>Twisted: "<tt>async def</tt>", "<tt>await</tt>"</li> </ul><!-- /html -->
 
   <div class="incremental">
   </div>
@@ -312,10 +312,10 @@ li:before { content: (">"); font-size: 50%; }
     <span class="n">d</span> <span class="o">=</span> <span class="n">Deferred</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">done</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;done: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
     <span class="n">d</span><span class="o">.</span><span class="n">addCallback</span><span class="p">(</span><span class="n">done</span><span class="p">)</span>
 
-    <span class="n">reactor</span><span class="o">.</span><span class="n">callLater</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">callback</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="n">reactor</span><span class="o">.</span><span class="n">callLater</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">callback</span><span class="p">,</span> <span class="s2">&quot;the result&quot;</span><span class="p">)</span>
     <span class="k">print</span><span class="p">(</span><span class="s2">&quot;scheduled callback&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">d</span>
 
@@ -325,7 +325,7 @@ li:before { content: (">"); font-size: 50%; }
 </pre></div>
 <!--- chunk -->
 <div class="output"><pre class="output">scheduled callback
-done
+done: the result
 </pre></div>
   </div>
 </div>
@@ -343,10 +343,10 @@ done
 
     <span class="n">d</span> <span class="o">=</span> <span class="n">Deferred</span><span class="p">()</span>
 
-    <span class="n">reactor</span><span class="o">.</span><span class="n">callLater</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">callback</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="n">reactor</span><span class="o">.</span><span class="n">callLater</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">callback</span><span class="p">,</span> <span class="s2">&quot;the result&quot;</span><span class="p">)</span>
     <span class="k">print</span><span class="p">(</span><span class="s2">&quot;scheduled callback&quot;</span><span class="p">)</span>
-    <span class="k">yield</span> <span class="n">d</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="k">yield</span> <span class="n">d</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;done: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
@@ -354,7 +354,7 @@ done
 </pre></div>
 <!--- chunk -->
 <div class="output"><pre class="output">scheduled callback
-done
+done: the result
 </pre></div>
   </div>
 </div>

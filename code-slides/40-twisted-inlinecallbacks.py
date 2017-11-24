@@ -12,10 +12,10 @@ def main(reactor):
 
     d = Deferred()
 
-    reactor.callLater(1, d.callback, None)
+    reactor.callLater(1, d.callback, "the result")
     print("scheduled callback")
-    yield d
-    print("done")
+    result = yield d
+    print("done: {}".format(result))
 
 
 if __name__ == '__main__':
