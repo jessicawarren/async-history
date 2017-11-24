@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <title>python decorators</title>
+  <meta name="copyright" content="" />
+  <link rel="stylesheet" type="text/css" media="screen, projection, print" href="slidy.css" />
+  <script src="slidy.js" charset="utf-8" type="text/javascript"></script>
+  <style type="text/css">
+    div.slide
+    {
+      font: 200% helvetica, arial;
+    }
+    h1,h2,h3,h4
+    {
+      text-align: center;
+      font-variant:small-caps;
+    }
+    .small
+    {
+      font-size: 70%;
+      color: #999;
+    }
+
+    .comment
+    {
+      color: red;
+    }
+
+    div.slide
+    {
+      padding-left: 0;
+     max-width: 100%;
+    }
+
+    h1
+    {
+      width:100%;
+      text-align:center;
+      border-bottom: 2px solid #cb4b16;
+      border-bottom: 2px solid #268bd2;
+    }
+  </style>
+  <style type="text/css">
+
+@font-face
+{
+      font-family: 'Source Code Pro Regular';
+      src: url('source-code-pro-regular.ttf') format('ttf');
+}
+
+
+pre { font-family: 'source code pro', monospace; font-weight: normal;}
+
+td.linenos { background-color: #f0f0f0; padding-right: 10px; }
+span.lineno { background-color: #f0f0f0; padding: 0 5px 0 5px; }
+pre {  line-height: 125%; padding: 0; border-radius: 5px; border: none; width: 100%; margin: 0; border:0;}
+div.highlight  { padding-left: 10%; width: 90%; border: 0; margin:0;}
+
+/* base03 */
+pre { background-color: #fdf6e3; }
+/*div.highlight { background-color: #002b36;}*/
+
+/* pre { padding-bottom: 0.1em; margin-bottom: 1px; } */
+pre { padding-bottom: 0.3em; }
+
+tt { font-samily: 'source code pro', monospace; color: #859900; background-color: #fdf6e3; }
+
+.hll { background-color: #ffffcc }
+.c { color: #586e75; font-style: italic } /* Comment */
+.err { color: #dc322f } /* Error */
+.g { color: #839496 } /* Generic */
+.k { color: #859900 } /* Keyword */
+.l { color: #839496 } /* Literal */
+.n { color: #93a1a1 } /* Name */
+.o { color: #839496 } /* Operator */
+.x { color: #839496 } /* Other */
+.p { color: #839496 } /* Punctuation */
+.cm { color: #586e75; font-style: italic } /* Comment.Multiline */
+.cp { color: #586e75; font-style: italic } /* Comment.Preproc */
+.c1 { color: #586e75; font-style: italic } /* Comment.Single */
+.cs { color: #586e75; font-style: italic } /* Comment.Special */
+.gd { color: #839496 } /* Generic.Deleted */
+.ge { color: #839496 } /* Generic.Emph */
+.gr { color: #839496 } /* Generic.Error */
+.gh { color: #839496 } /* Generic.Heading */
+.gi { color: #839496 } /* Generic.Inserted */
+.go { color: #839496 } /* Generic.Output */
+.gp { color: #839496 } /* Generic.Prompt */
+.gs { color: #839496 } /* Generic.Strong */
+.gu { color: #839496 } /* Generic.Subheading */
+.gt { color: #839496 } /* Generic.Traceback */
+.kc { color: #859900 } /* Keyword.Constant */
+.kd { color: #859900 } /* Keyword.Declaration */
+.kn { color: #cb4b16 } /* Keyword.Namespace */
+.kp { color: #cb4b16 } /* Keyword.Pseudo */
+.kr { color: #859900 } /* Keyword.Reserved */
+.kt { color: #859900 } /* Keyword.Type */
+.ld { color: #839496 } /* Literal.Date */
+.m { color: #2aa198 } /* Literal.Number */
+.s { color: #2aa198 } /* Literal.String */
+.na { color: #839496 } /* Name.Attribute */
+.nb { color: #268bd2 } /* Name.Builtin */
+.nc { color: #268bd2 } /* Name.Class */
+.no { color: #b58900 } /* Name.Constant */
+.nd { color: #cb4b16 } /* Name.Decorator */
+.ni { color: #cb4b16 } /* Name.Entity */
+.ne { color: #cb4b16 } /* Name.Exception */
+.nf { color: #268bd2 } /* Name.Function */
+.nl { color: #839496 } /* Name.Label */
+.nn { color: #b58900 } /* Name.Namespace */
+.nx { color: #839496 } /* Name.Other */
+.py { color: #268bd2 } /* Name.Property */
+.nt { color: #859900 } /* Name.Tag */
+.nv { color: #cb4b16 } /* Name.Variable */
+.ow { color: #859900 } /* Operator.Word */
+.w { color: #002b36 } /* Text.Whitespace */
+.mf { color: #2aa198 } /* Literal.Number.Float */
+.mh { color: #2aa198 } /* Literal.Number.Hex */
+.mi { color: #2aa198 } /* Literal.Number.Integer */
+.mo { color: #2aa198 } /* Literal.Number.Oct */
+.sb { color: #2aa198 } /* Literal.String.Backtick */
+.sc { color: #2aa198 } /* Literal.String.Char */
+.sd { color: #2aa198 } /* Literal.String.Doc */
+.s2 { color: #2aa198 } /* Literal.String.Double */
+.se { color: #cb4b16 } /* Literal.String.Escape */
+.sh { color: #2aa198 } /* Literal.String.Heredoc */
+.si { color: #cb4b16 } /* Literal.String.Interpol */
+.sx { color: #2aa198 } /* Literal.String.Other */
+.sr { color: #2aa198 } /* Literal.String.Regex */
+.s1 { color: #2aa198 } /* Literal.String.Single */
+.ss { color: #2aa198 } /* Literal.String.Symbol */
+.bp { color: #268bd2; font-weight: bold } /* Name.Builtin.Pseudo */
+.vc { color: #268bd2 } /* Name.Variable.Class */
+.vg { color: #268bd2 } /* Name.Variable.Global */
+.vi { color: #268bd2 } /* Name.Variable.Instance */
+.il { color: #2aa198 } /* Literal.Number.Integer.Long */
+
+
+
+pre.output {
+background-color: #073642;
+background-color: #000;
+color: #3a3;
+padding-left: 2em; padding-right: -2em;
+}
+
+ul { margin-left: 3em; }
+li { list-style-type: disc !important; }
+li:before { content: (">"); font-size: 50%; }
+  </style>
+</head>
+<body>
+<div class="slide">
+<!-- gathered html -->
+ <div class="incremental" style="text-align:center; background-color: white; height: 100%; width: 100%;">   <br/></br>   <img height="180" width="auto" src="assembly.png" />   <br/><br/>   <img height="256" width="auto" src="teamit.jpeg" /> </div><!-- /html -->
+
+  <div class="incremental">
+  </div>
+</div>
+
+<div class="slide">
+<!-- gathered html -->
+  <h1 style="valign:center;">async python</h1> <div class="incremental" style="text-align:center;"><img height="350" width="auto" src="avatar-transparent.svg" />   <p>mike warren<br/><span class="small">https://</span><span style="color:#268bd2; font-size: 125%; font-family: 'source code pro' monospace; text-shadow: 1px 1px #586e75;">meejah.ca</span></span></p> </div><!-- /html -->
+
+  <div class="incremental">
+  </div>
+</div>
+
+<div class="slide">
+<!-- gathered html -->
+  <h1 style="valign:center;">async python</h1> <ul class="incremental">   <li>review: async in general</li>   <li>Twisted: 2002: Deferred</li>   <li>Twisted: 2006: @inlineCallbacks + yield</li>   <li>Coroutines: 2009: "yield from"</li>   <li>asyncio: 2013</li>   <li>asyncio: "async def", "await"</li>   <li>Twisted: "async def", "await"</li> </ul><!-- /html -->
+
+  <div class="incremental">
+  </div>
+</div>
+
+<div class="slide">
+<!-- gathered html -->
+  <h1 style="valign:center;">review: async</h1> <ul class="incremental">   <li><a href="https://www.burgundywall.com/presentations/async">https://www.burgundywall.com/presentations/async</a></li>   <li>context-switching costs time</li>   <li>I/O bound vs CPU bound</li>   <li>"event-based programming"</li>   <li>"co-operative multithreading"</li> </ul><!-- /html -->
+
+  <div class="incremental">
+  </div>
+</div>
+
+<div class="slide">
+<!-- gathered html -->
+  <h1 style="valign:center;">review: event-based programming</h1> <ul class="incremental">   <li>incoming events trigger "callbacks"</li>   <li>callbacks do some logic ...</li>   <li>... and trigger other events</li>   <li>(send a network packet, start a timer, etc)</li> </ul><!-- /html -->
+
+  <div class="incremental">
+  </div>
+</div>
+
+<div class="slide">
+<!-- gathered html -->
+  <h1 style="valign:center;">Twisted</h1> <ul class="incremental">   <li>1.0 released October 2002</li>   <li>(YouTube started 2005)</li>   <li><tt>Deferred</tt></li>   <li>(asyncio uses <tt>Future</tt>)</li>   <li>"Promise"</li> </ul><!-- /html -->
+
+  <div class="incremental">
+  </div>
+</div>
+
+<div class="slide">
+<!-- gathered html -->
+  <h1 style="valign:center;">Deferred</h1> <ul class="incremental">   <li><tt>callback</tt> and/or <tt>errback</tt></li>   <li>callback receives result, errback receives <tt>Failure</tt></li>   <li>not tied to event-loop!</li> </ul><!-- /html -->
+
+  <div class="incremental">
+  </div>
+</div>
+
+<div class="slide">
+<!-- gathered html -->
+  <h1 style="valign:center;">Deferred</h1><!-- /html -->
+
+  <div class="incremental">
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">twisted.internet.defer</span> <span class="kn">import</span> <span class="n">Deferred</span>
+</pre></div>
+<!--- chunk -->
+<div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">Deferred</span><span class="p">()</span>
+</pre></div>
+<!--- chunk -->
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cb</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;result: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+<span class="n">d</span><span class="o">.</span><span class="n">addCallback</span><span class="p">(</span><span class="n">cb</span><span class="p">)</span>
+</pre></div>
+<!--- chunk -->
+<div class="highlight"><pre><span></span><span class="n">d</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="s2">&quot;the result&quot;</span><span class="p">)</span>
+</pre></div>
+<!--- chunk -->
+<div class="output"><pre class="output">result: the result
+</pre></div>
+  </div>
+</div>
+
+<div class="slide">
+<!-- gathered html -->
+  <h1 style="valign:center;">Deferred</h1><!-- /html -->
+
+  <div class="incremental">
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">twisted.internet.defer</span> <span class="kn">import</span> <span class="n">Deferred</span>
+</pre></div>
+<!--- chunk -->
+<div class="highlight"><pre><span></span><span class="n">d</span> <span class="o">=</span> <span class="n">Deferred</span><span class="p">()</span>
+</pre></div>
+<!--- chunk -->
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">err</span><span class="p">(</span><span class="n">fail</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;error: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fail</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+<span class="n">d</span><span class="o">.</span><span class="n">addErrback</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+</pre></div>
+<!--- chunk -->
+<div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="mi">1</span> <span class="o">/</span> <span class="mi">0</span>
+<span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+    <span class="n">d</span><span class="o">.</span><span class="n">errback</span><span class="p">()</span>
+</pre></div>
+<!--- chunk -->
+<div class="output"><pre class="output">error: division by zero
+</pre></div>
+  </div>
+</div>
+
+<div class="slide">
+<!-- gathered html -->
+  <h1 style="valign:center;">Twisted Event-Loop</h1> <ul class="incremental">   <li>Twisted supports many OS event-loops</li>   <li>poll, epoll, select, WaitForMultipleObjects, IOCP, KQueue, CoreFoundation</li>   <li>can interoperate w/ many GUI event-loops</li> </ul><!-- /html -->
+
+  <div class="incremental">
+  </div>
+</div>
+
+<div class="slide">
+<!-- gathered html -->
+  <h1 style="valign:center;">Twisted Event-Loop</h1> <ul class="incremental">   <li>glues network and OS events to callbacks</li>   <li>e.g. "dataReceived(data)" whenever a socket is read()-able</li>   <li>Many APIs, organized around <tt>Deferred</tt></li> </ul><!-- /html -->
+
+  <div class="incremental">
+  </div>
+</div>
+
+<div class="slide">
+<!-- gathered html -->
+  <h1 style="valign:center;">Twisted using Deferred</h1><!-- /html -->
+
+  <div class="incremental">
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">twisted.internet.defer</span> <span class="kn">import</span> <span class="n">Deferred</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">reactor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :returns: a Deferred that fires when the program is completed</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">d</span> <span class="o">=</span> <span class="n">Deferred</span><span class="p">()</span>
+    <span class="c1"># ...</span>
+    <span class="k">return</span> <span class="n">d</span>
+</pre></div>
+<!--- chunk -->
+  </div>
+</div>
+
+<div class="slide">
+<!-- gathered html -->
+  <h1 style="valign:center;">Twisted using Deferred</h1><!-- /html -->
+
+  <div class="incremental">
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">twisted.internet.defer</span> <span class="kn">import</span> <span class="n">Deferred</span><span class="p">,</span> <span class="n">inlineCallbacks</span>
+<span class="kn">from</span> <span class="nn">twisted.internet.task</span> <span class="kn">import</span> <span class="n">react</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">reactor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :returns: a Deferred that fires when the program is completed</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">d</span> <span class="o">=</span> <span class="n">Deferred</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">done</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">)</span>
+    <span class="n">d</span><span class="o">.</span><span class="n">addCallback</span><span class="p">(</span><span class="n">done</span><span class="p">)</span>
+
+    <span class="n">reactor</span><span class="o">.</span><span class="n">callLater</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">callback</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;scheduled callback&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">d</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">react</span><span class="p">(</span><span class="n">main</span><span class="p">)</span>
+</pre></div>
+<!--- chunk -->
+<div class="output"><pre class="output">scheduled callback
+done
+</pre></div>
+  </div>
+</div>
+
+<div class="slide">
+<!-- gathered html -->
+  <h1 style="valign:center;">Twisted: @inlineCallbacks</h1> <ul class="incremental">   <li><tt>@inlineCallbacks</tt> around 2006</li>   <li>(ab)uses <tt>yield</tt> to wait</li> </ul><!-- /html -->
+
+  <div class="incremental">
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">twisted.internet.defer</span> <span class="kn">import</span> <span class="n">Deferred</span><span class="p">,</span> <span class="n">inlineCallbacks</span>
+<span class="kn">from</span> <span class="nn">twisted.internet.task</span> <span class="kn">import</span> <span class="n">react</span>
+
+<span class="nd">@inlineCallbacks</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">reactor</span><span class="p">):</span>
+
+    <span class="n">d</span> <span class="o">=</span> <span class="n">Deferred</span><span class="p">()</span>
+
+    <span class="n">reactor</span><span class="o">.</span><span class="n">callLater</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">callback</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;scheduled callback&quot;</span><span class="p">)</span>
+    <span class="k">yield</span> <span class="n">d</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">react</span><span class="p">(</span><span class="n">main</span><span class="p">)</span>
+</pre></div>
+<!--- chunk -->
+<div class="output"><pre class="output">scheduled callback
+done
+</pre></div>
+  </div>
+</div>
+
+<div class="slide">
+<!-- gathered html -->
+  <h1 style="valign:center;">Twisted: @inlineCallbacks</h1> <ul class="incremental">   <li>mark async functions</li>   <li>nicer to read</li>   <li>(linear, like threaded code)</li> </ul><!-- /html -->
+
+  <div class="incremental">
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">twisted.internet.defer</span> <span class="kn">import</span> <span class="n">Deferred</span><span class="p">,</span> <span class="n">inlineCallbacks</span>
+<span class="kn">from</span> <span class="nn">twisted.internet.task</span> <span class="kn">import</span> <span class="n">react</span>
+
+<span class="nd">@inlineCallbacks</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">reactor</span><span class="p">):</span>
+
+    <span class="n">d</span> <span class="o">=</span> <span class="n">Deferred</span><span class="p">()</span>
+
+    <span class="n">reactor</span><span class="o">.</span><span class="n">callLater</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">callback</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;scheduled callback&quot;</span><span class="p">)</span>
+    <span class="k">yield</span> <span class="n">d</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">react</span><span class="p">(</span><span class="n">main</span><span class="p">)</span>
+</pre></div>
+<!--- chunk -->
+  </div>
+</div>
+
+<div class="slide">
+<!-- gathered html -->
+  <h1 style="valign:center;">asyncio</h1> <ul class="incremental">   <li>2009 <tt>yield from</tt></li>   <li>Tulip: PoC 2012</li>   <li>asyncio (PEP 3156) 2013</li>   <li><tt>Future</tt> (tied to event-loop!)</li>   <li>no chaining</li>   <li>no "Failure"-like encapsulation</li> </ul><!-- /html -->
+
+  <div class="incremental">
+  </div>
+</div>
+
+<div class="slide">
+<!-- gathered html -->
+  <h1 style="valign:center;">asyncio</h1><!-- /html -->
+
+  <div class="incremental">
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="nd">@asyncio.coroutine</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">loop</span><span class="p">):</span>
+
+    <span class="n">d</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Future</span><span class="p">()</span>
+
+    <span class="n">loop</span><span class="o">.</span><span class="n">call_later</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">set_result</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;scheduled callback&quot;</span><span class="p">)</span>
+    <span class="k">yield from</span> <span class="n">d</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+    <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">main</span><span class="p">(</span><span class="n">loop</span><span class="p">))</span>
+</pre></div>
+<!--- chunk -->
+  </div>
+</div>
+
+<div class="slide">
+<!-- gathered html -->
+  <h1 style="valign:center;">async def, await</h1> <ul class="incremental">   <li>PEP 492: April 2015</li>   <li><tt>@inlineCallbacks</tt> &rarr; <tt>async def</tt></li>   <li><tt>@coroutine</tt> &rarr; <tt>async def</tt></li>   <li><tt>yield from</tt> &rarr; <tt>await</tt></li>   <li>zen: "Explicit is better than implicit"</li> </ul><!-- /html -->
+
+  <div class="incremental">
+  </div>
+</div>
+
+<div class="slide">
+<!-- gathered html -->
+  <h1 style="valign:center;">async def, await</h1><!-- /html -->
+
+  <div class="incremental">
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">twisted.internet.defer</span> <span class="kn">import</span> <span class="n">ensureDeferred</span><span class="p">,</span> <span class="n">Deferred</span>
+<span class="kn">from</span> <span class="nn">twisted.internet.task</span> <span class="kn">import</span> <span class="n">react</span>
+
+<span class="n">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">reactor</span><span class="p">):</span>
+
+    <span class="n">d</span> <span class="o">=</span> <span class="n">Deferred</span><span class="p">()</span>
+
+    <span class="n">reactor</span><span class="o">.</span><span class="n">callLater</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">callback</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;scheduled callback&quot;</span><span class="p">)</span>
+    <span class="n">await</span> <span class="n">d</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_main</span><span class="p">(</span><span class="n">reactor</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ensureDeferred</span><span class="p">(</span><span class="n">main</span><span class="p">(</span><span class="n">reactor</span><span class="p">))</span>
+    <span class="n">react</span><span class="p">(</span><span class="n">_main</span><span class="p">)</span>
+</pre></div>
+<!--- chunk -->
+<div class="output"><pre class="output">scheduled callback
+done
+</pre></div>
+  </div>
+</div>
+
+<div class="slide">
+<!-- gathered html -->
+  <h1 style="valign:center;">async def, await</h1><!-- /html -->
+
+  <div class="incremental">
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="n">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">loop</span><span class="p">):</span>
+
+    <span class="n">d</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Future</span><span class="p">()</span>
+
+    <span class="n">loop</span><span class="o">.</span><span class="n">call_later</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">set_result</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;scheduled callback&quot;</span><span class="p">)</span>
+    <span class="n">await</span> <span class="n">d</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+    <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">main</span><span class="p">(</span><span class="n">loop</span><span class="p">))</span>
+</pre></div>
+<!--- chunk -->
+<div class="output"><pre class="output">scheduled callback
+done
+</pre></div>
+  </div>
+</div>
+
+<div class="slide">
+<!-- gathered html -->
+  <h1 style="valign:center;">async *</h1> <ul class="incremental">   <li>Async version of other primitives</li>   <li><tt>async with</tt></li>   <li><tt>async for</tt></li> </ul><!-- /html -->
+
+  <div class="incremental">
+  </div>
+</div>
+
+<div class="slide">
+<!-- gathered html -->
+  <h1 style="valign:center;">Coding Exercise</h1> <ul class="incremental">   <li><tt>https://github.com/py-yyc/async-exercise</tt></li>   <li>Simple ReST Web Client usage</li>   <li>Use Twisted (with treq) <i>or</i></li>   <li>use asyncio (with aiohttp)</li>   <li>"Getting Started"</li> </ul><!-- /html -->
+
+  <div class="incremental">
+  </div>
+</div>
+
+<div class="slide">
+<!-- gathered html -->
+  <h1 style="valign:center;">Coding Exercise</h1><!-- /html -->
+
+  <div class="incremental">
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">treq</span>
+
+<span class="kn">from</span> <span class="nn">twisted.internet.defer</span> <span class="kn">import</span> <span class="n">Deferred</span><span class="p">,</span> <span class="n">ensureDeferred</span>
+<span class="kn">from</span> <span class="nn">twisted.internet.task</span> <span class="kn">import</span> <span class="n">react</span>
+<span class="kn">from</span> <span class="nn">twisted.web.client</span> <span class="kn">import</span> <span class="n">readBody</span>
+
+
+<span class="n">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">reactor</span><span class="p">):</span>
+    <span class="c1"># download from a URI</span>
+    <span class="n">uri</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;https://meejah.ca&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">await</span> <span class="n">treq</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="n">uri</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span>
+            <span class="sa">b</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="p">[</span><span class="sa">b</span><span class="s2">&quot;Twisted&quot;</span><span class="p">],</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+    <span class="c1"># download the reply</span>
+    <span class="n">raw_data</span> <span class="o">=</span> <span class="n">await</span> <span class="n">readBody</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Received {} bytes&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">raw_data</span><span class="p">)))</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_main</span><span class="p">(</span><span class="n">reactor</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ensureDeferred</span><span class="p">(</span><span class="n">main</span><span class="p">(</span><span class="n">reactor</span><span class="p">))</span>
+    <span class="n">react</span><span class="p">(</span><span class="n">_main</span><span class="p">)</span>
+</pre></div>
+<!--- chunk -->
+  </div>
+</div>
+
+<div class="slide">
+<!-- gathered html -->
+  <h1 style="valign:center;">Coding Exercise</h1><!-- /html -->
+
+  <div class="incremental">
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">aiohttp</span>
+
+
+<span class="n">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">loop</span><span class="p">):</span>
+    <span class="c1"># download from a URL</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;https://meejah.ca&quot;</span>
+
+    <span class="n">async</span> <span class="k">with</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">(</span><span class="n">loop</span><span class="o">=</span><span class="n">loop</span><span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="n">req_context</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">url</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="p">{</span>
+                <span class="sa">u</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">:</span> <span class="sa">u</span><span class="s2">&quot;asyncio&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+        <span class="n">async</span> <span class="k">with</span> <span class="n">req_context</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
+            <span class="n">raw_data</span> <span class="o">=</span> <span class="n">await</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Received {} bytes&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">raw_data</span><span class="p">)))</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+    <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">main</span><span class="p">(</span><span class="n">loop</span><span class="p">))</span>
+</pre></div>
+<!--- chunk -->
+  </div>
+</div>
+
+
+</body>
+</html>
